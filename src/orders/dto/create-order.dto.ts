@@ -1,33 +1,32 @@
-import { OrderStatus } from '@prisma/client';
 import { Type } from 'class-transformer';
-import {
-  IsPositive,
-  IsOptional,
-  IsBoolean,
-  IsNumber,
-  IsString,
-  IsEnum,
-} from 'class-validator';
+import { ValidateNested, ArrayMinSize, IsArray } from 'class-validator';
+
+import { OrderItemDto } from './order-item.dto';
 
 export class CreateOrderDto {
-  @Type(() => Number)
-  @IsPositive()
-  @IsNumber()
-  totalAmount: number;
+  @ValidateNested({ each: true })
+  @Type(() => OrderItemDto)
+  @ArrayMinSize(1)
+  @IsArray()
+  items: OrderItemDto[];
+  // @Type(() => Number)
+  // @IsPositive()
+  // @IsNumber()
+  // totalAmount: number;
 
-  @Type(() => Number)
-  @IsPositive()
-  @IsNumber()
-  totalItems: number;
+  // @Type(() => Number)
+  // @IsPositive()
+  // @IsNumber()
+  // totalItems: number;
 
-  @IsEnum(OrderStatus, {
-    message: `Possible status values ate ${OrderStatus}`,
-  })
-  @IsOptional()
-  @IsString()
-  status: OrderStatus = OrderStatus.PENDING;
+  // @IsEnum(OrderStatus, {
+  //   message: `Possible status values ate ${OrderStatus}`,
+  // })
+  // @IsOptional()
+  // @IsString()
+  // status: OrderStatus = OrderStatus.PENDING;
 
-  @IsOptional()
-  @IsBoolean()
-  paid: boolean = false;
+  // @IsOptional()
+  // @IsBoolean()
+  // paid: boolean = false;
 }
