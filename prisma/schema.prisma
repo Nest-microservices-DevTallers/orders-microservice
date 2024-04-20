@@ -24,14 +24,14 @@ model Order {
   totalAmount Float
   totalItems  Int
 
-  status      OrderStatus
+  status      OrderStatus @default(PENDING)
   paid        Boolean     @default(false)
   paidAt      DateTime?
 
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  OrderItm OrderItem[]
+  OrderItem OrderItem[]
 }
 
 model OrderItem {
