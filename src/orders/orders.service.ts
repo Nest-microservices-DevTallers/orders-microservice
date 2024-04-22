@@ -9,7 +9,7 @@ import {
   Inject,
 } from '@nestjs/common';
 
-import { PRODUCT_SERVICE } from '@server/config';
+import { NATS_SERVICE } from '@server/config';
 
 import { CreateOrderDto, OrderItemDto, OrderPaginationDto } from './dto';
 
@@ -18,7 +18,7 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
   private readonly logger = new Logger('OrderService');
 
   constructor(
-    @Inject(PRODUCT_SERVICE) private readonly productsClient: ClientProxy,
+    @Inject(NATS_SERVICE) private readonly productsClient: ClientProxy,
   ) {
     super();
   }
