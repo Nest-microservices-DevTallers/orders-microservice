@@ -1,18 +1,20 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
     args:
-      [
-        'build',
-        '-t',
-        'us-west2-docker.pkg.dev/microservices-421402/image-registry/orders-ms',
-        '-f',
-        'dockerfile.prod',
-        '--platform=linux/amd64',
-        '.',
-      ]
+      - -c
+      - |
+        docker build -t us-west2-docker.pkg.dev/microservices-421402/image-registry/orders-ms -f dockerfile.prod --platform=linux/amd64 --build-arg ORDERS_DATABASE_URL=$$DATABASE_URL .
+    secretEnv: ['DATABASE_URL']
+
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
         'push',
         'us-west2-docker.pkg.dev/microservices-421402/image-registry/orders-ms',
       ]
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/367390259998/secrets/orders_database_url/versions/1
+      env: 'DATABASE_URL'
